@@ -1,0 +1,23 @@
+{
+    "name": "stancl/unit-price-calculator",
+    "description": "A library for calculating unit prices",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Stancl\\UnitPriceCalculator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Samuel Štancl",
+            "email": "samuel@archte.ch"
+        }
+    ],
+    "require": {
+        "php": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}

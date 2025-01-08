@@ -1,0 +1,24 @@
+name: PHPUnit
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.3'
+
+    - name: Install Composer
+      run: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+
+    - name: Install dependencies
+      run: composer install
+
+    - name: Run PHPUnit
+      run: ./vendor/bin/phpunit tests
