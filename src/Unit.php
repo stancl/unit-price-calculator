@@ -8,13 +8,13 @@ class Unit
     public const KILOGRAM = 'kg';
 
     public const LITER = 'l';
-    public const MILILITER = 'ml';
+    public const MILLILITER = 'ml';
 
     public const UNITS = [
         self::GRAM,
         self::KILOGRAM,
         self::LITER,
-        self::MILILITER,
+        self::MILLILITER,
     ];
 
     /**
@@ -29,7 +29,7 @@ class Unit
             self::KILOGRAM => [self::KILOGRAM, 1],
             self::GRAM => [self::KILOGRAM, 1000],
             self::LITER => [self::LITER, 1],
-            self::MILILITER => [self::LITER, 1000],
+            self::MILLILITER => [self::LITER, 1000],
         ][$unit];
     }
 }

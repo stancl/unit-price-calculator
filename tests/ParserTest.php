@@ -61,7 +61,7 @@ class ParserTest extends TestCase
         $this->assertSameNormalized("7,26 Kč / kg", $product->format('cs_CZ', 'CZK'));
     }
 
-    public function testMililitersCanBeParsed(): void
+    public function testMillilitersCanBeParsed(): void
     {
         // 1000 for 100ml
         // 10000 for 1L
