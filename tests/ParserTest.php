@@ -185,4 +185,36 @@ class ParserTest extends TestCase
         $this->assertSame(['g', 123], Parser::getUnitAndUnitAmount('abc def (123g)'));
         $this->assertSame(['kg', 123], Parser::getUnitAndUnitAmount('(abc def 123 kg)'));
     }
+
+    public function testSingleWordMultiplicationExpressionsAreAllowed(): void
+    {
+        // Single word with comma: 3x7,5g
+        // 222 for 3x7,5g (22,5g)
+        // 9,866.6666666667 for 1kg
+        $product = Parser::parse('foo - bar, baz ++ # 123g, 2323ml, 1kg, more words, 3x7,5g', 222);
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertEquals(9866.67, round($product->unitPrice, 2));
+        $this->assertSame(Unit::KILOGRAM, $product->unit);
+        $this->assertSameNormalized('$9,866.67 / kg', $product->format('en_US', 'USD'));
+        $this->assertSameNormalized("9 866,67 Kč / kg", $product->format('cs_CZ', 'CZK'));
+
+        // Single word with dot: 3x7.5ml
+        // Same math
+        $product = Parser::parse('foo - bar, baz ++ # 123g, 2323ml, 1kg, more words, 3x7.5ml', 222);
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertEquals(9866.67, round($product->unitPrice, 2));
+        $this->assertSame(Unit::LITER, $product->unit);
+        $this->assertSameNormalized('$9,866.67 / L', $product->format('en_US', 'USD'));
+        $this->assertSameNormalized("9 866,67 Kč / L", $product->format('cs_CZ', 'CZK'));
+
+        // Single word with parentheses: (3x7.5L)
+        // 222 for 22.5 L
+        // 9.8666666666667 for 1L
+        $product = Parser::parse('foo - bar, baz ++ # 123g, 2323ml, 1kg, more words, (3x7.5L)', 222);
+        $this->assertInstanceOf(Product::class, $product);
+        $this->assertEquals(9.87, round($product->unitPrice, 2));
+        $this->assertSame(Unit::LITER, $product->unit);
+        $this->assertSameNormalized('$9.87 / L', $product->format('en_US', 'USD'));
+        $this->assertSameNormalized("9,87 Kč / L", $product->format('cs_CZ', 'CZK'));
+    }
 }

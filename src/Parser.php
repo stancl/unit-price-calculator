@@ -82,6 +82,11 @@ class Parser
                 $amount = substr($word, 0, -strlen($unit));
                 if (is_numeric($amount)) {
                     return [$unit, $amount + 0];
+                } elseif (strpos($amount, 'x') !== false) { // 1x1.5L expression
+                    $amountParts = explode('x', $amount);
+                    if (count($amountParts) === 2 && is_numeric($amountParts[0]) && is_numeric($amountParts[1])) {
+                        return [$unit, $amountParts[0] * $amountParts[1]];
+                    }
                 }
             }
         }
