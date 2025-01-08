@@ -19,12 +19,12 @@ class Product
     }
 
     /** @throws InvalidProductFormatException */
-    public static function parse(string $format, $price): Product
+    public static function from(string $format, $price): Product
     {
         return Parser::parse($format, $price);
     }
 
-    public static function tryParse(string $format, $price): ?Product
+    public static function tryFrom(string $format, $price): ?Product
     {
         try {
             return Parser::parse($format, $price);

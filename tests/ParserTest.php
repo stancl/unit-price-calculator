@@ -32,7 +32,7 @@ class ParserTest extends TestCase
 
         // 123.456 for 17g
         // 7,262.1176470588 for 1kg
-        $product = Product::parse('17 g', 123.456);
+        $product = Product::from('17 g', 123.456);
         $this->assertInstanceOf(Product::class, $product);
         $this->assertEquals(7262.12, round($product->unitPrice, 2));
         $this->assertSame(Unit::KILOGRAM, $product->unit);
@@ -44,7 +44,7 @@ class ParserTest extends TestCase
     {
         // 1000 for 100kg
         // 10 for 1kg
-        $product = Product::parse('100kg', 1000);
+        $product = Product::from('100kg', 1000);
         $this->assertInstanceOf(Product::class, $product);
         $this->assertEquals(10, $product->unitPrice);
         $this->assertSame(Unit::KILOGRAM, $product->unit);
@@ -53,7 +53,7 @@ class ParserTest extends TestCase
 
         // 123.456 for 17kg
         // 7.2621176471 for 1kg
-        $product = Product::tryParse('17 kg', 123.456);
+        $product = Product::tryFrom('17 kg', 123.456);
         $this->assertInstanceOf(Product::class, $product);
         $this->assertEquals(7.26, round($product->unitPrice, 2));
         $this->assertSame(Unit::KILOGRAM, $product->unit);
