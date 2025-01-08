@@ -171,4 +171,18 @@ class ParserTest extends TestCase
         $this->assertSameNormalized('$16.75 / kg', $product->format('en_US', 'USD'));
         $this->assertSameNormalized("16,75 Kč / kg", $product->format('cs_CZ', 'CZK'));
     }
+
+    public function testUnitAndUnitAmountCanBeExtracted(): void
+    {
+        $this->assertSame(['g', 100], Parser::getUnitAndUnitAmount('100g'));
+        $this->assertSame(['g', 100], Parser::getUnitAndUnitAmount('100 g'));
+        $this->assertSame(['ml', 100], Parser::getUnitAndUnitAmount('100ml'));
+        $this->assertSame(['ml', 100], Parser::getUnitAndUnitAmount('100 ml'));
+        $this->assertSame(['kg', 10], Parser::getUnitAndUnitAmount('10kg'));
+        $this->assertSame(['kg', 10], Parser::getUnitAndUnitAmount('10 kg'));
+        $this->assertSame(['l', 20], Parser::getUnitAndUnitAmount('20L'));
+        $this->assertSame(['l', 20], Parser::getUnitAndUnitAmount('20 l'));
+        $this->assertSame(['g', 123], Parser::getUnitAndUnitAmount('abc def (123g)'));
+        $this->assertSame(['kg', 123], Parser::getUnitAndUnitAmount('(abc def 123 kg)'));
+    }
 }

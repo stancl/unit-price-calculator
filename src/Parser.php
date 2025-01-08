@@ -12,9 +12,22 @@ namespace Stancl\UnitPriceCalculator;
 class Parser
 {
     /**
+     * @throws InvalidProductFormatException
      * @param int|float $price
      */
     public static function parse(string $format, $price): Product
+    {
+        [$unit, $unitAmount] = static::getUnitAndUnitAmount($format);
+        [$baseUnit, $multiple] = Unit::toBaseUnit($unit);
+
+        return new Product($baseUnit, $price / $unitAmount * $multiple);
+    }
+
+    /**
+     * @throws InvalidProductFormatException
+     * @return array{string, int}
+     */
+    public static function getUnitAndUnitAmount(string $format): array
     {
         $format = strtolower($format);
         $words = explode(' ', $format);
@@ -59,9 +72,7 @@ class Parser
             throw new InvalidProductFormatException($format);
         }
 
-        [$baseUnit, $multiple] = Unit::toBaseUnit($unit);
-
-        return new Product($baseUnit, $price / $unitAmount * $multiple);
+        return [$unit, $unitAmount];
     }
 
     protected static function parseUnitAndAmount(string $word): ?array
